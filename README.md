@@ -9,7 +9,7 @@
     ```
 4. Install dependencies:
     ```sh
-    pip install -r config/requirements.txt
+    pip install -r requirements/requirements.txt
     ```
 5. Install [Allure Report](https://allurereport.org/docs/install/)
 
