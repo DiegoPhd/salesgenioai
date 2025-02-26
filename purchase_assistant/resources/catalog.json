@@ -11,7 +11,7 @@
         "Name": "Samsung Galaxy S21",
         "Description": "6.2-inch, 8GB RAM, 128GB Storage",
         "Price": 799,
-        "Stock_availabiility": 30
+        "Stock_availabiility": 0
     },
     {
         "PRODUCT_ID": 3,
@@ -39,7 +39,7 @@
         "Name": "Bose QuietComfort 35 II",
         "Description": "Wireless Bluetooth Headphones, Noise-Cancelling",
         "Price": 299,
-        "Stock_availabiility": 40
+        "Stock_availabiility": 0
     },
     {
         "PRODUCT_ID": 7,
@@ -67,7 +67,7 @@
         "Name": "Fitbit Charge 5",
         "Description": "Advanced Fitness & Health Tracker",
         "Price": 179,
-        "Stock_availabiility": 60
+        "Stock_availabiility": 0
     },
     {
         "PRODUCT_ID": 11,
@@ -95,7 +95,7 @@
         "Name": "Canon EOS R5",
         "Description": "Full-Frame Mirrorless Camera, 45MP",
         "Price": 3899,
-        "Stock_availabiility": 8
+        "Stock_availabiility": 0
     },
     {
         "PRODUCT_ID": 15,
@@ -109,7 +109,7 @@
         "Name": "Sony PlayStation 5",
         "Description": "Next-Gen Gaming Console",
         "Price": 499,
-        "Stock_availabiility": 20
+        "Stock_availabiility": 0
     },
     {
         "PRODUCT_ID": 17,

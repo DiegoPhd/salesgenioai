@@ -19,7 +19,7 @@ class ReadTheCatalog:
 
     @beat("{} reads the catalog")
     def perform_as(self, the_actor: Actor) -> None:
-        with open("purchase_assistant/catalog.json") as file:
+        with open("purchase_assistant/resources/catalog.json") as file:
             catalog = json.load(file)
 
         products = [Product(**item) for item in catalog]
