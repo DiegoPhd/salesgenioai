@@ -9,7 +9,7 @@ sys.path.append(folder_a_directory)
 
 ##################################################
 
-from pytest_bdd import scenarios, then, when
+from pytest_bdd import scenarios, then, when, parsers
 from screenpy import (
     AnActor,
     ContainsTheText,
@@ -17,6 +17,7 @@ from screenpy import (
     IsGreaterThan,
     IsGreaterThanOrEqualTo,
     IsNot,
+    ReadExactly,
     See,
     SeeAllOf,
     noted_under,
@@ -24,9 +25,13 @@ from screenpy import (
 
 from actions.reads_the_catalog import ReadTheCatalog
 from data.catalog_model import Product
-from utils.note_constants import OUT_OF_STOCK_PRODUCTS, PRODUCTS
+from utils.note_constants import OUT_OF_STOCK_PRODUCTS, PRODUCTS, SEARCH_PRODUCT_REPONSE
 from actions.save_out_of_stock_products import SaveTheOutOfStockProducts
-from questions.the_available_products import TheAvailableProductsText
+from questions.the_available_products_text import (
+    TheAvailableProductsText,
+)
+from actions.search_the_product import SearchThe
+
 
 scenarios("../features/purchase_assistant.feature")
 
@@ -39,6 +44,13 @@ def diego_loads_the_catalog_json_file(Diego: AnActor) -> None:
 @when("Diego asks about the available products")
 def diego_asks_about_the_available_products(Diego: AnActor) -> None:
     Diego.attempts_to(ReadTheCatalog(), SaveTheOutOfStockProducts())
+
+
+@when(parsers.parse("Diego asks about {product_to_search} availability"))
+def diego_asks_about_google_pixel_6_availability(
+    Diego: AnActor, product_to_search: str
+) -> None:
+    Diego.attempts_to(ReadTheCatalog(), SearchThe.product(product_to_search))
 
 
 @then("the catalog loads correctly and the products can be iterated over without error")
@@ -79,3 +91,29 @@ def diego_should_only_see_the_available_products(
 
     for i in out_of_stock_products:
         Diego.should(See(the_available_product_text, IsNot(ContainsTheText(i))))
+
+
+@then("Diego should see the stock availability")
+def diego_should_only_see_the_stock_availability(
+    Diego: AnActor,
+) -> None:
+    product_to_search_response: str = noted_under(SEARCH_PRODUCT_REPONSE)
+
+    Diego.should(
+        SeeAllOf(
+            (product_to_search_response, ContainsTheText("The product")),
+            (
+                product_to_search_response,
+                ContainsTheText("is in stock with availability:"),
+            ),
+        )
+    )
+
+
+@then("Diego should see that the product is out of stock")
+def diego_should_see_that_the_product_is_out_of_stock(
+    Diego: AnActor,
+) -> None:
+    product_to_search_response: str = noted_under(SEARCH_PRODUCT_REPONSE)
+
+    Diego.should(See(product_to_search_response, ReadExactly("Product not found.")))
