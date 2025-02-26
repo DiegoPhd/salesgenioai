@@ -1,0 +1,9 @@
+pydantic==2.7
+screenpy==4.2.5
+pytest==8.3.1
+selenium==4.23.1
+typing==3.7.4.3
+webdriver-manager==4.0.1
+pytest-bdd==7.2.0
+allure-combine==1.0.11
+screenpy[selenium,allure,requests]
