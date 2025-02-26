@@ -46,8 +46,8 @@ def diego_asks_about_the_available_products(Diego: AnActor) -> None:
     Diego.attempts_to(ReadTheCatalog(), SaveTheOutOfStockProducts())
 
 
-@when(parsers.parse("Diego asks about {product_to_search} availability"))
-def diego_asks_about_google_pixel_6_availability(
+@when(parsers.parse("Diego asks about {product_to_search} information"))
+def diego_asks_about_product_information(
     Diego: AnActor, product_to_search: str
 ) -> None:
     Diego.attempts_to(ReadTheCatalog(), SearchThe.product(product_to_search))
@@ -93,17 +93,49 @@ def diego_should_only_see_the_available_products(
         Diego.should(See(the_available_product_text, IsNot(ContainsTheText(i))))
 
 
+@then("Diego should see the product information")
+def diego_should_see_the_product_information(
+    Diego: AnActor,
+) -> None:
+    product_to_search_response: tuple[str, str] = noted_under(SEARCH_PRODUCT_REPONSE)
+    product_info: str = product_to_search_response[0]
+
+    Diego.should(
+        SeeAllOf(
+            (product_info, ContainsTheText("The product is")),
+            (
+                product_info,
+                ContainsTheText("with description"),
+            ),
+            (
+                product_info,
+                ContainsTheText("and price:"),
+            ),
+        )
+    )
+
+
+@then("Diego should see that the product does not exist")
+def Diego_should_see_that_the_product_does_not_exist(
+    Diego: AnActor,
+) -> None:
+    product_to_search_response: tuple[str, str] = noted_under(SEARCH_PRODUCT_REPONSE)
+    product_info: str = product_to_search_response[0]
+
+    Diego.should(See(product_info, ReadExactly("Product not found.")))
+
+
 @then("Diego should see the stock availability")
 def diego_should_only_see_the_stock_availability(
     Diego: AnActor,
 ) -> None:
-    product_to_search_response: str = noted_under(SEARCH_PRODUCT_REPONSE)
-
+    product_to_search_response: tuple[str, str] = noted_under(SEARCH_PRODUCT_REPONSE)
+    product_stock_info: str = product_to_search_response[1]
     Diego.should(
         SeeAllOf(
-            (product_to_search_response, ContainsTheText("The product")),
+            (product_stock_info, ContainsTheText("The product")),
             (
-                product_to_search_response,
+                product_stock_info,
                 ContainsTheText("is in stock with availability:"),
             ),
         )
@@ -114,6 +146,7 @@ def diego_should_only_see_the_stock_availability(
 def diego_should_see_that_the_product_is_out_of_stock(
     Diego: AnActor,
 ) -> None:
-    product_to_search_response: str = noted_under(SEARCH_PRODUCT_REPONSE)
+    product_to_search_response: tuple[str, str] = noted_under(SEARCH_PRODUCT_REPONSE)
+    product_stock_info: str = product_to_search_response[1]
 
-    Diego.should(See(product_to_search_response, ReadExactly("Product not found.")))
+    Diego.should(See(product_stock_info, ReadExactly("Product not found.")))

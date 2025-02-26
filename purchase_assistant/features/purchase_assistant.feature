@@ -8,10 +8,18 @@ Feature: Purchase assistant
         When Diego asks about the available products
         Then Diego should only see the available products
 
+    Scenario: Ensure that the function returns the information of the requested product
+        When Diego asks about OnePlus 9 Pro information
+        Then Diego should see the product information
+
+    Scenario: Ensure that the function returns the information of the requested product
+        When Diego asks about TabletXYZ information
+        Then Diego should see that the product does not exist
+
     Scenario: Verify that the function correctly reports stock availability with stock
-        When Diego asks about Google Pixel 6 availability
+        When Diego asks about Google Pixel 6 information
         Then Diego should see the stock availability
 
     Scenario: Verify that the function correctly reports stock availability without stock
-        When Diego asks about Fitbit Charge 5 availability
+        When Diego asks about Fitbit Charge 5 information
         Then Diego should see that the product is out of stock
